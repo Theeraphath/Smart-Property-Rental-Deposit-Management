@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EstateFlow | Smart Rental Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">E</span><span>estate<span class="brand-light">flow</span><small>SMART PROPERTY</small></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="overview"><span>▦</span> Overview</button>
+        <button class="nav-item" data-view="properties"><span>⌂</span> Properties</button>
+        <button class="nav-item" data-view="agreements"><span>▤</span> Rental agreements</button>
+        <button class="nav-item" data-view="deposits"><span>◈</span> Deposits & payments</button>
+        <button class="nav-item" data-view="disputes"><span>⚖</span> Disputes</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="network-card">
+          <div class="network-dot"></div>
+          <div><b id="network-status">Not connected</b><small id="network-label">Waiting for MetaMask</small></div>
+        </div>
+        <div class="side-foot">SMART RENTAL PLATFORM <span>v1.0</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">PROPERTY MANAGEMENT / <span id="crumb">OVERVIEW</span></div><h1 id="page-title">Overview</h1></div>
+        <div class="top-actions">
+          <span class="chain-pill"><i></i><span id="chain-name">Not connected</span></span>
+          <button class="wallet-btn" id="connect-btn">⌁ Connect wallet</button>
+        </div>
+      </header>
+
+      <section id="view-overview" class="view active">
+        <div class="welcome-row">
+          <div><h2>Good day. <span class="muted">Your rental space, simplified.</span></h2><p>Manage agreements, deposits and payments transparently on blockchain.</p></div>
+          <button class="primary-btn" data-go="properties">＋ Register property</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total properties</span><span class="stat-icon">⌂</span></div><strong id="stat-properties">—</strong><small>Registered on-chain</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Rental agreements</span><span class="stat-icon purple">▤</span></div><strong id="stat-agreements">—</strong><small>Created on-chain</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Active agreements</span><span class="stat-icon green">✓</span></div><strong id="stat-active">—</strong><small>Confirmed by tenant</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Open disputes</span><span class="stat-icon orange">⚖</span></div><strong id="stat-disputes">—</strong><small>Require attention</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel"><div class="panel-head"><div><h3>Recent properties</h3><p>Your latest registered rental units</p></div><button class="text-btn" data-go="properties">View all →</button></div><div id="overview-properties" class="empty-state">Connect your wallet and load contract data to see properties.</div></article>
+          <article class="panel quick-panel"><div class="panel-head"><div><h3>Quick actions</h3><p>Common management tasks</p></div></div>
+            <button class="quick-action" data-go="properties"><span class="quick-icon">＋</span><span><b>Register a property</b><small>Add a rental unit to the blockchain</small></span><span class="arrow">→</span></button>
+            <button class="quick-action" data-go="agreements"><span class="quick-icon violet">▤</span><span><b>Create an agreement</b><small>Set tenant, dates and rental terms</small></span><span class="arrow">→</span></button>
+            <button class="quick-action" data-go="deposits"><span class="quick-icon mint">◈</span><span><b>Manage payments</b><small>Track rent and security deposits</small></span><span class="arrow">→</span></button>
+          </article>
+        </div>
+        <div class="notice"><span>ⓘ</span><div><b>Demo environment</b><p>This project is configured for a test network. Use test ETH only. Blockchain transactions cannot be reversed once confirmed.</p></div></div>
+      </section>
+
+      <section id="view-properties" class="view">
+        <div class="section-intro"><div><h2>Properties</h2><p>Register and manage rental units on the blockchain.</p></div></div>
+        <div class="two-col">
+          <article class="panel form-panel"><div class="panel-head"><div><h3>Register property</h3><p>Add a new rental property</p></div><span class="form-number">01</span></div>
+            <form id="property-form">
+              <label>Property name<input id="property-name" required maxlength="80" placeholder="e.g. The Residence, Room 1204"></label>
+              <label>Location<input id="property-location" required maxlength="120" placeholder="e.g. Bangkok, Thailand"></label>
+              <div class="form-row"><label>Monthly rent (ETH)<input id="property-rent" type="number" min="0" step="0.0001" required placeholder="0.05"></label><label>Security deposit (ETH)<input id="property-deposit" type="number" min="0" step="0.0001" required placeholder="0.10"></label></div>
+              <button class="primary-btn full" type="submit">Register on blockchain ↗</button>
+            </form>
+          </article>
+          <article class="panel"><div class="panel-head"><div><h3>How registration works</h3><p>Property ownership and terms</p></div></div>
+            <div class="step-list"><div><b>1</b><span><strong>Enter property details</strong><small>Set the property name, location and ETH amounts.</small></span></div><div><b>2</b><span><strong>Confirm with MetaMask</strong><small>Your wallet signs the registration transaction.</small></span></div><div><b>3</b><span><strong>Verify on-chain</strong><small>The property is stored in the deployed contract.</small></span></div></div>
+            <div class="soft-note">Only the wallet that registered a property can create an agreement for it.</div>
+          </article>
+        </div>
+        <article class="panel table-panel"><div class="panel-head"><div><h3>Registered properties</h3><p>All properties stored in the connected contract</p></div><button class="outline-btn" id="refresh-properties">↻ Refresh</button></div><div id="properties-list" class="empty-state">Connect wallet to load properties.</div></article>
+      </section>
+
+      <section id="view-agreements" class="view">
+        <div class="section-intro"><div><h2>Rental agreements</h2><p>Create an agreement and let both parties confirm the terms.</p></div></div>
+        <article class="panel form-panel wide-form"><div class="panel-head"><div><h3>Create rental agreement</h3><p>The property owner creates an agreement for a tenant wallet.</p></div><span class="form-number">02</span></div>
+          <form id="agreement-form">
+            <div class="form-row three"><label>Property ID<input id="agreement-property" type="number" min="0" required placeholder="0"></label><label>Tenant wallet address<input id="agreement-tenant" required placeholder="0x..."></label><label>Start date<input id="agreement-start" type="date" required></label></div>
+            <div class="form-row"><label>End date<input id="agreement-end" type="date" required></label><div class="field-hint">Rent and deposit amounts are taken from the registered property.</div></div>
+            <button class="primary-btn" type="submit">Create agreement ↗</button>
+          </form>
+        </article>
+        <article class="panel table-panel"><div class="panel-head"><div><h3>All agreements</h3><p>Confirm, fund or manage existing agreements</p></div><button class="outline-btn" id="refresh-agreements">↻ Refresh</button></div><div id="agreements-list" class="empty-state">Connect wallet to load agreements.</div></article>
+      </section>
+
+      <section id="view-deposits" class="view">
+        <div class="section-intro"><div><h2>Deposits & payments</h2><p>Security deposits and rental payments are handled in ETH.</p></div></div>
+        <div class="notice"><span>◈</span><div><b>Payment safety</b><p>Only send the exact amount requested by the contract. Always verify the agreement ID and recipient before confirming in MetaMask.</p></div></div>
+        <article class="panel table-panel"><div class="panel-head"><div><h3>Payment-enabled agreements</h3><p>Tenant can deposit security and record rent payments here.</p></div><button class="outline-btn" id="refresh-payments">↻ Refresh</button></div><div id="payments-list" class="empty-state">Connect wallet to load agreements.</div></article>
+      </section>
+
+      <section id="view-disputes" class="view">
+        <div class="section-intro"><div><h2>Rental disputes</h2><p>Raise a dispute for review by the contract's designated arbiter.</p></div></div>
+        <article class="panel"><div class="panel-head"><div><h3>Dispute process</h3><p>Disputed deposits remain locked until the arbiter resolves the case.</p></div></div><div class="step-list horizontal"><div><b>1</b><span><strong>Raise a dispute</strong><small>Owner or tenant submits a reason.</small></span></div><div><b>2</b><span><strong>Arbiter reviews</strong><small>Designated contract deployer reviews the case.</small></span></div><div><b>3</b><span><strong>Resolve funds</strong><small>Arbiter chooses tenant refund or owner payout.</small></span></div></div></article>
+        <article class="panel table-panel"><div class="panel-head"><div><h3>Disputed agreements</h3><p>Open cases and resolution controls</p></div><button class="outline-btn" id="refresh-disputes">↻ Refresh</button></div><div id="disputes-list" class="empty-state">Connect wallet to load disputes.</div></article>
+      </section>
+
+      <footer>EstateFlow © 2026 <span>Powered by Ethereum smart contracts</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
